@@ -26,17 +26,17 @@ public class NoteAdapter extends RecyclerView.Adapter <NoteAdapter.ViewHolder>
     //多选
     public boolean MUL_tag = false;
     //保存CheckBox选中状态的集合HashMap
-    private HashMap<Integer,Boolean> ischecked = new HashMap<Integer, Boolean>();
+    private HashMap<Integer,Boolean> ischecked = new HashMap<Integer, Boolean>();//凡是id对应内容的保存和操作，都用HshMap,此处创建一个HashMap对象名字叫ischecked
 
 
-    public NoteAdapter (List<Note> noteList){
+    public NoteAdapter (List<Note> noteList){//构造函数，调用此类时先调用该函数
         mNoteList = noteList;
         initMaps();
     }
 
-    public void initMaps(){
+    public void initMaps(){  //初始化map
         for(int i = 0; i <mNoteList.size(); i++){
-            ischecked.put(i,false);//HashMap中的put 方法
+            ischecked.put(i,false);//HashMap中的put 方法,key,boolean
         }
     }
 
@@ -46,7 +46,7 @@ public class NoteAdapter extends RecyclerView.Adapter <NoteAdapter.ViewHolder>
         TextView dateView;
         CheckBox checkBox;
 
-        public ViewHolder(View v){
+        public ViewHolder(View v){//定义控件的构造函数
             super(v);
             cardView = (CardView)v.findViewById(R.id.cardview);
             contentView = (TextView)v.findViewById(R.id.content);
@@ -57,23 +57,23 @@ public class NoteAdapter extends RecyclerView.Adapter <NoteAdapter.ViewHolder>
     }
 
     @Override
-    public ViewHolder onCreateViewHolder (final ViewGroup parent, int viewType){
-        if(mContext == null){
-            mContext = parent.getContext();
+    public ViewHolder onCreateViewHolder (final ViewGroup parent, int viewType){//负责承载每个子项的布局
+        if(mContext == null){//上下文为空时，就是无操作时
+            mContext = parent.getContext();//ViewGroup parent是指RecycleView的布局
         }
         final View view = LayoutInflater.from(mContext).inflate(R.layout.note_item,parent,false);
         final ViewHolder viewHolder = new ViewHolder(view);
 
-        viewHolder.cardView.setOnClickListener(this);
+        viewHolder.cardView.setOnClickListener(this);//设置点击监听事件
         viewHolder.cardView.setOnLongClickListener(this);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position){
+    public void onBindViewHolder(final ViewHolder holder, final int position){//负责将每个子项holder绑定数据
         Note note = mNoteList.get(position);
-        String values = note.getContent();
+        String values = note.getContent();//内容
         holder.contentView.setText(values);
         holder.dateView.setText(new SimpleDateFormat("yyyy/MM/dd    HH:mm:ss").format(note.getDate()));
         //多选状态,CheckBox显示,否则不显示

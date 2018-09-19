@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int WRITE = 1;// 1是新增便签,2是读取已有便签
     public static final int READ = 2;
     private RecyclerView recyclerView;
-    private List<Note> noteList;
+    private List<Note> noteList;//便签表
     private List<Note> deleteList;
     private NoteAdapter adapter;
     private ActionBar actionBar;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.menu3);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-        noteList = DataSupport.order("date desc").find(Note.class);
+        noteList = DataSupport.order("date desc").find(Note.class);//便签表映射到数据库，指定按照日期（date）的排序方式：desc表示降序排序;asc或者不写表示升序
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,16 +82,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // 获取保存通过CheckBox选中的便签,选中状态由adapter中的map保存,通过getMap()获取
-                        Map<Integer,Boolean> map = adapter.getMap();
+                        Map<Integer,Boolean> map = adapter.getMap();//因为按照id对应内容，所以用Map保存
                         //从后往前删除
                         for(int i=map.size()-1; i>=0; i--){
                             if(map.get(i)){
-                                int id = noteList.get(i).getId();//i为CheckBox选中的view的position
+                                int id = noteList.get(i).getId();//i为CheckBox选中的view的position，通过getId()赋为id
                                 deleteData(id);
                                 //noteList中移除
                                 noteList.remove(i);
                                 //adapter重新设置item
-                                adapter.notifyItemRemoved(i);
+                                adapter.notifyItemRemoved(i);//recyclerView的方法
 
                             }
 
@@ -131,15 +131,15 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        //创建adapter
+        //创建adapter对象
         adapter = new NoteAdapter(noteList);
         //设置监听
         adapter.setRecycleViewOnItemClickListener(new NoteAdapter.RecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
-                Intent intent = new Intent(MainActivity.this,WriteActivity.class);
+                Intent intent = new Intent(MainActivity.this,WriteActivity.class);//跳转到便签详情页
                 Note note = noteList.get(position);
-                status = 2;
+                status = 2;//读   状态
                 intent.putExtra("Status", status);
                 intent.putExtra("Content",note);//传递对象
                 startActivity(intent);

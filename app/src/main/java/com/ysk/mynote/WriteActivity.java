@@ -64,13 +64,13 @@ public class WriteActivity extends AppCompatActivity {
                 if(status == MainActivity.WRITE){
                     Intent intent1 = new Intent(WriteActivity.this,MainActivity.class);
                     startActivity(intent1);
-                    saveData();
+                    saveData();//保存数据
                 }
                 else if(status == MainActivity.READ){
                     //读取便签后更新数据
                     Intent intent1 = new Intent(WriteActivity.this,MainActivity.class);
                     startActivity(intent1);
-                    updateData();
+                    updateData();//更新数据
 
                 }
                 finish();
@@ -92,7 +92,7 @@ public class WriteActivity extends AppCompatActivity {
     }
 
 
-    public void updateData(){
+    public void updateData(){//更新数据
         if(!(contentText.getText().toString().equals(""))){
             Note note = new Note();
             note.setDate(new Date());
@@ -102,7 +102,7 @@ public class WriteActivity extends AppCompatActivity {
 
     }
 
-    public void saveData(){
+    public void saveData(){//保存数据
         if(!(contentText.getText().toString().equals("")) ){
             Note note = new Note();
             note.setDate(new Date());
